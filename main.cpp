@@ -6,6 +6,8 @@
 #include <algorithm>
 
 using namespace std;
+//you need to write map to vector in this open
+
 
 struct Node {
 	int count;
@@ -26,7 +28,7 @@ public:
 	string file_name;
 	string main_line;
 	
-	vector<char,int> count_map;
+	vector<pair<char,int>> count_map;
 	vector<Node> count_symb;
 
 	static bool compareByValue(const pair<char,int>& a, const pair<char,int>& b){
@@ -53,27 +55,35 @@ public:
 	void print_main_line(){
 		cout << main_line << endl;
 	}
-	//rewrite
-	void count_symbols_return_vec(){
+	
+	//in proces(writing vector tipe)
+	void count_symbols_return_map(){
+		int pos = 0;
 		for (char i : main_line){
 			if (count_map.find(i) == count_map.end()){
-				count_map[i] = ;
+				count_map.push_back(make_pair(i,1));
 			}
 			else{
-				count_map[i] += 1;
+				for(int j = 0;j < count_map.size();j++){
+					if (count_map[j].first == i){
+						pos = j;
+						break;
+					}
+				}
+				count_map[pos].second ++;
 			}
 
 		}
 		sort(count_map.begin(),count_map.end(),compareByValue);
 	}
-	//rewrite
+	
 	void print_map_count(){
 		for (const auto& pair : count_map){
 			cout << pair.first << pair.second << endl;
 
 		}
 	}
-	//rewrite
+	
 	void add_map_to_sort_Node(){
 		for(const auto& pair : count_map){
 			count_symb.push_back(pair.second);
