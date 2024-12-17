@@ -6,7 +6,7 @@
 
 using namespace std;
 
-bool ArchAlgorithm::CompareValueMap(const pair<char,int>& a, const pair<char,int>& b){
+static bool CompareValueMap(const pair<char,int>& a, const pair<char,int>& b){
 	return a.second < b.second;
 }
 
@@ -55,14 +55,16 @@ void ArchAlgorithm::CountSymbolsReturnMap(){
 
 void ArchAlgorithm::PrintMapCount(){
 	for (const auto& pair : count_map){
-		cout << pair.first << pair.second << endl;
+		cout << "count_map" << pair.first << pair.second << endl;
 
 	}
 }
 	
 void ArchAlgorithm::AddMapToSortNode(){
+	Node root(0);
 	for(const auto& pair : count_map){
-		count_symb.push_back(pair.second);
+		root.count = pair.second;
+		count_symb.push_back(root);
 	}
 
 }
@@ -73,22 +75,19 @@ void ArchAlgorithm::PrintSortNode(){
 	}
 }
 
-//void Main::BuildNodeBin (){
-//	while (count_symb.size() > 1){
-//		count_symb.push_back(count_symb[0].count + count_symb[1].count);
-//		if (count_symb[0].count > count_symb[1].count){
-//			(*count_symb[count_symb.size()]).left_1 = count_symb[1];
-//			(*count_symb[count_symb.size()]).right_0 = count_symb[0];
-//		}
-//		else{
-//			(*count_symb[count_symb.size()]).right_0 = count_symb[1];
-//			(*count_symb[count_symb.size()]).left_1 = count_symb[0];
-//		}
-//		auto iter = count_symb.cbegin();
-//		count_symb.erase(iter);
-//		count_symb.erase(iter + 1 );
-//	}	
-//} 
+void ArchAlgorithm::BuildNodeBin (){
+	Node root(0);
+	while (count_symb.size() > 1){
+		root.count = count_symb[0].count + count_symb[1].count;
+		root.right_0 = &count_symb[1];
+		root.left_1 = &count_symb[0];
+		count_symb.push_back(root);
+
+		auto iter = count_symb.cbegin();
+		count_symb.erase(iter);
+		count_symb.erase(iter + 1 );
+	}	
+} 
 
 
 
@@ -109,9 +108,9 @@ int main(){
 	main_arch.AddMapToSortNode();
 	main_arch.PrintSortNode();
 
-	//main_arch.BuildNodeBin();
+	main_arch.BuildNodeBin();
 
-	cout << main_arch.count_symb[0].count;
+	cout << main_arch.count_symb[0].count << endl;
 
 
 

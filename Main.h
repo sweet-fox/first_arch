@@ -9,6 +9,7 @@ public:
 	int count;
 	Node* left_1;
 	Node* right_0;
+	
 
 	Node(int value){
 		count = value;
@@ -24,7 +25,6 @@ public:
 	vector<pair<char,int>> count_map;
 	vector<Node> count_symb;
 
-	static bool CompareValueMap();
 	void ReadFileName();
 	void PrintFileName();
 	void ReadFileString();
