@@ -10,6 +10,10 @@ static bool CompareValueMap(const pair<char,int>& a, const pair<char,int>& b){
 	return a.second < b.second;
 }
 
+static bool CompareByNode(const Node& a, const Node& b){
+	return a.count < b.count;
+}
+
 void ArchAlgorithm::ReadFileName(){
 	cin >> file_name;
 }
@@ -70,6 +74,7 @@ void ArchAlgorithm::AddMapToSortNode(){
 }
 	
 void ArchAlgorithm::PrintSortNode(){
+	cout << "Node" << endl;
 	for(const auto& n: count_symb){
 		cout << n.count << endl;
 	}
@@ -78,14 +83,29 @@ void ArchAlgorithm::PrintSortNode(){
 void ArchAlgorithm::BuildNodeBin (){
 	Node root(0);
 	while (count_symb.size() > 1){
+
+		cout << "count_symb" << count_symb[0].count + count_symb[1].count <<  endl;
+
 		root.count = count_symb[0].count + count_symb[1].count;
-		root.right_0 = &count_symb[1];
-		root.left_1 = &count_symb[0];
+
+		cout << "root.count" << root.count << endl;
+		if (count_symb[0].count > count_symb[1].count){
+			root.right_1 = &count_symb[0];
+			root.left_0 = &count_symb[1];
+		}
+		else{
+			root.right_1 = &count_symb[1];
+			root.left_0 = &count_symb[0];
+		}
 		count_symb.push_back(root);
 
 		auto iter = count_symb.cbegin();
 		count_symb.erase(iter);
-		count_symb.erase(iter + 1 );
+		count_symb.erase(iter);
+
+		sort(count_symb.begin(), count_symb.end(), CompareByNode);
+
+		PrintSortNode();
 	}	
 } 
 
@@ -110,7 +130,7 @@ int main(){
 
 	main_arch.BuildNodeBin();
 
-	cout << main_arch.count_symb[0].count << endl;
+	cout << main_arch.count_symb[0].count << " "<< main_arch.count_symb.size() <<  endl;
 
 
 

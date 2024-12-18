@@ -7,14 +7,14 @@ using namespace std;
 class Node{
 public:
 	int count;
-	Node* left_1;
-	Node* right_0;
+	Node* left_0;
+	Node* right_1;
 	
 
 	Node(int value){
 		count = value;
-		left_1 = nullptr;
-		right_0 = nullptr;
+		left_0 = nullptr;
+		right_1 = nullptr;
 	}
 };
 class ArchAlgorithm {
