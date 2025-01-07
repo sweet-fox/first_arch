@@ -3,6 +3,7 @@
 #include <fstream>
 #include <algorithm>
 #include "Main.h"
+#include <list>
 
 using namespace std;
 
@@ -93,7 +94,7 @@ void ArchAlgorithm::PrintCopySortNode(){
 //print this node vector
 void ArchAlgorithm::PrintSortNode(){
 	cout << "Node" << endl;
-	for(const auto& n: count_symb){
+	for(Node* n: count_symb){
 		cout << (*n).count << " " << (*n).ch << endl;
 	}
 	cout << "Node1" << endl;
@@ -106,20 +107,22 @@ void ArchAlgorithm::PrintSortNode(){
 void ArchAlgorithm::BuildNodeBin (){
 	PrintSortNode();
 	while (count_symb.size() > 1){
-		
-		main_count_symb.emplace_back((*count_symb[0]).count + (*count_symb[1]).count);
+		auto iter {count_symb.begin()};
 
-		main_count_symb[main_count_symb.size()-1].right_1 = count_symb[0];
-		main_count_symb[main_count_symb.size()-1].left_0 = count_symb[1];
+		main_count_symb.emplace_back(((*iter)->count) + ((*(++iter))->count));
 
-		count_symb.emplace_back(&main_count_symb[main_count_symb.size()-1]);
+		main_count_symb.back().right_1 = count_symb.front();
+		count_symb.pop_front();
 
-		auto iter = count_symb.cbegin();
-		count_symb.erase(iter);
-		count_symb.erase(iter);
+		main_count_symb.back().left_0 = count_symb.front();
+
+		count_symb.push_back(&main_count_symb.back());
+
+		count_symb.pop_front();
+
 	
-
-		sort(count_symb.begin(), count_symb.end(), CompareByNode);
+		
+		count_symb.sort(CompareByNode);
 
 		
 
@@ -128,9 +131,11 @@ void ArchAlgorithm::BuildNodeBin (){
 }
 
 void Node::GoBinNode(string bin_str,vector<pair<char,string>>& Node_Map){
+	cout << "start GoBinNode" << endl;
+
 	if (ch=='%'){
-		(*left_0).GoBinNode(bin_str+"0",Node_Map);
-		(*right_1).GoBinNode(bin_str+"1",Node_Map);	
+		left_0->GoBinNode(bin_str+"0",Node_Map);
+		right_1->GoBinNode(bin_str+"1",Node_Map);	
 	}
 	else{
 		Node_Map.emplace_back(make_pair(ch,bin_str));
@@ -161,12 +166,11 @@ int main(){
 	main_arch.PrintMapCount();
 
 	main_arch.AddMapToSortNode();
-	main_arch.PrintSortNode();
 	main_arch.CopySortNode();
 	main_arch.BuildNodeBin();
 	
-	cout << "node_test" << (*(*main_arch.count_symb[0]).left_0).count << endl;
-
-	(*main_arch.count_symb[0]).GoBinNode(main_arch.bin_str,main_arch.Node_Map);
+//	cout << "node_test" << (*(*main_arch.count_symb.back()).left_0).count << endl;
+	
+	main_arch.count_symb.front()->GoBinNode(main_arch.bin_str,main_arch.Node_Map);	
 	main_arch.PrintBinMap();
 }

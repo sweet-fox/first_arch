@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <list>
 
 using namespace std;
 
@@ -43,7 +44,7 @@ public:
 
 	vector<pair<char,int>> count_map;
 	vector<Node> main_count_symb;
-	vector<Node*> count_symb;
+	list<Node*> count_symb;
 
 	Node main_root = Node(0);	
 	vector<pair<char,string>> Node_Map;
