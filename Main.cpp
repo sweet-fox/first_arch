@@ -17,6 +17,13 @@ static bool CompareByNode(Node* a, Node* b){
 	return (*a).count < (*b).count;
 }
 
+ArchAlgorithm::~ArchAlgorithm(){
+	for(Node* n: main_count_symb){
+		if(n != nullptr)
+			delete n;
+	}
+}
+
 //read file name
 void ArchAlgorithm::ReadFileName(){
 	cin >> file_name;
@@ -72,21 +79,21 @@ void ArchAlgorithm::PrintMapCount(){
 //create Node vector from map
 void ArchAlgorithm::AddMapToSortNode(){
 	for(const auto& pair : count_map){
-		main_count_symb.emplace_back(pair.second, pair.first);
+		main_count_symb.push_back(new Node(pair.second, pair.first));
 	}
 
 }
 
 //buid copy main_count_symb to count_symb
 void ArchAlgorithm::CopySortNode(){
-	for (auto& node : main_count_symb){
-		count_symb.push_back(&node);
+	for (auto node : main_count_symb){
+		count_symb.push_back(node);
 	}
 }
 
 void ArchAlgorithm::PrintCopySortNode(){
 	for (Node* node : count_symb){
-		cout << "c_s" << (*node).count << endl; 
+		cout << "c_s" << node->count << endl; 
 	}
 }
 
@@ -95,11 +102,11 @@ void ArchAlgorithm::PrintCopySortNode(){
 void ArchAlgorithm::PrintSortNode(){
 	cout << "Node" << endl;
 	for(Node* n: count_symb){
-		cout << (*n).count << " " << (*n).ch << endl;
+		cout << n->count << " \"" << n->ch << "\""<< endl;
 	}
 	cout << "Node1" << endl;
-	for(const auto& n: main_count_symb){
-		cout << n.count << " " << n.ch << endl;
+	for(const auto n: main_count_symb){
+		cout << n->count << " \"" << n->ch << "\""<< endl;
 	}
 }
 
@@ -107,25 +114,21 @@ void ArchAlgorithm::PrintSortNode(){
 void ArchAlgorithm::BuildNodeBin (){
 	PrintSortNode();
 	while (count_symb.size() > 1){
-		auto iter {count_symb.begin()};
+		auto iter = count_symb.begin();
+		Node* n(new Node(((*iter)->count) + ((*(++iter))->count)));
+		//Node *n(new Node(3));
 
-		main_count_symb.emplace_back(((*iter)->count) + ((*(++iter))->count));
+		main_count_symb.push_back(n);
 
-		main_count_symb.back().right_1 = count_symb.front();
+		main_count_symb.back()->right_1 = count_symb.front();
 		count_symb.pop_front();
 
-		main_count_symb.back().left_0 = count_symb.front();
-
-		count_symb.push_back(&main_count_symb.back());
-
+		main_count_symb.back()->left_0 = count_symb.front();
+		
+		count_symb.push_back(main_count_symb.back());
 		count_symb.pop_front();
-
-	
 		
-		count_symb.sort(CompareByNode);
-
-		
-
+		count_symb.sort(CompareByNode);		
 		PrintSortNode();
 	}
 }
