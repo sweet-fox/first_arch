@@ -12,28 +12,21 @@ public:
 	Node* left_0;
 	Node* right_1;
 	
-	Node(){}
+	Node() = delete;
+	Node(Node&) = delete;
+	Node(const Node&) = delete;
 
-	Node(int value){
-		count = value;
-		ch = '%';
-		left_0 = nullptr;
-		right_1 = nullptr;
-	}
-	Node(int value, char _ch){
-		count = value;
-		ch = _ch;
-		left_0 = nullptr;
-		right_1 = nullptr;
-	}
-	/*
+	Node(int value, char _ch = '%'):
+		count(value), ch(_ch), left_0(nullptr), right_1(nullptr)
+	{ }
+	
 	~Node(){
-		ch='0';
+		ch = 0;
 		count = 0;
 		left_0 = nullptr;
-		right_1=nullptr;
+		right_1 = nullptr;
 	}
-	*/
+	
 	void GoBinNode(string bin_str, vector<pair<char,string>>& Node_Map);
 };
 
@@ -43,7 +36,7 @@ public:
 	string main_line;
 
 	vector<pair<char,int>> count_map;
-	vector<Node> main_count_symb;
+	vector<Node*> main_count_symb;
 	list<Node*> count_symb;
 
 	Node main_root = Node(0);	
@@ -62,4 +55,6 @@ public:
 	void PrintBinMap();
 	void CopySortNode();
 	void PrintCopySortNode();
+
+	~ArchAlgorithm();
 };
