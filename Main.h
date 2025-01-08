@@ -34,12 +34,12 @@ class ArchAlgorithm {
 public:
 	string file_name;
 	string main_line;
+	string bin_main_line;
 
 	vector<pair<char,int>> count_map;
 	vector<Node*> main_count_symb;
 	list<Node*> count_symb;
-
-	Node main_root = Node(0);	
+	
 	vector<pair<char,string>> Node_Map;
 	string bin_str ="";
 
@@ -55,6 +55,8 @@ public:
 	void PrintBinMap();
 	void CopySortNode();
 	void PrintCopySortNode();
-
+	void BuildBinString();
+	void BuildBinFile();	
+	
 	~ArchAlgorithm();
 };

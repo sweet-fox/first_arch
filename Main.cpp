@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "Main.h"
 #include <list>
+#include <string>
 
 using namespace std;
 
@@ -152,6 +153,53 @@ void ArchAlgorithm::PrintBinMap(){
 	}
 
 }
+void ArchAlgorithm::BuildBinString(){
+	bin_main_line = "";
+	for (char i:main_line){
+		for (const auto& pair :Node_Map){
+			if (pair.first == i){
+				bin_main_line = bin_main_line + pair.second;
+				break;
+			}
+		}
+	}
+	cout << bin_main_line << endl;	
+}
+
+void ArchAlgorithm::BuildBinFile(){
+	ofstream out_file("out_bin_file.bin",ios::binary);
+
+	uint8_t table_size = Node_Map.size();
+	out_file.write(reinterpret_cast<const char*>(&table_size),sizeof(table_size));
+	for (const auto& pair : Node_Map){
+		char symb = pair.first;
+		const string& symb_bin_val = pair.second;
+
+		out_file.write(reinterpret_cast<const char*>(&symb), sizeof(symb));
+		
+		uint8_t bin_len = symb_bin_val.length();
+		out_file.write(reinterpret_cast<const char*>(&bin_len),sizeof(bin_len));
+		
+		uint32_t bin_num = stoi(symb_bin_val, nullptr,2);
+		out_file.write(reinterpret_cast<const char*>(&bin_num), sizeof(bin_num));
+	}
+
+	string _bin_main_line = "";
+	int count_bit = 0;
+	unsigned int num = 0;
+	for (char i:bin_main_line){
+		count_bit ++;
+		_bin_main_line = _bin_main_line + i;
+		cout << _bin_main_line << endl;
+	       	if (count_bit == 31){
+			num = stoi(_bin_main_line,nullptr,2);
+			out_file.write(reinterpret_cast<const char*>(&num), sizeof(num));
+			_bin_main_line = "";
+			count_bit = 0;
+		}
+	}
+	out_file.close();
+}
 
 
 int main(){
@@ -176,4 +224,6 @@ int main(){
 	
 	main_arch.count_symb.front()->GoBinNode(main_arch.bin_str,main_arch.Node_Map);	
 	main_arch.PrintBinMap();
+	main_arch.BuildBinString();
+	main_arch.BuildBinFile();
 }
