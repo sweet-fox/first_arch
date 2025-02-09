@@ -19,7 +19,7 @@ public:
 	vector<pair<char,string>> Node_Map;
 	string bin_str ="";
 
-	void ReadFileName();
+	void ReadFileName(string _file_name);
 	void ReadFileString();
 	void PrintMainLine();
 	void CountSymbolsReturnMap();

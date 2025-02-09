@@ -29,8 +29,8 @@ ArchAlgorithm::~ArchAlgorithm(){
 }
 
 //read file name
-void ArchAlgorithm::ReadFileName(){
-	cin >> file_name;
+void ArchAlgorithm::ReadFileName(string _file_name){
+	file_name = _file_name;
 }
 
 //write to string file
@@ -39,9 +39,10 @@ void ArchAlgorithm::ReadFileString  (){
 	ifstream in(file_name);
 	if (in.is_open()){
 		while(getline(in, line)){
-			main_line = main_line + line;
+			main_line = main_line + line+'|';
 		}
 	}
+
 }
 
 //print this string
@@ -133,7 +134,7 @@ void ArchAlgorithm::BuildNodeBin (){
 		count_symb.pop_front();
 		
 		count_symb.sort(CompareByNode);		
-		PrintSortNode();
+//		PrintSortNode();
 	}
 }
 
@@ -146,10 +147,10 @@ void ArchAlgorithm::PrintBinMap(){
 }
 void ArchAlgorithm::BuildBinString(){
 	bin_main_line = "";
-	unsigned long int progress = 0;
-	ProgressBar prog_bar(main_line.length());
+//	unsigned long int progress = 0;
+//	ProgressBar prog_bar(main_line.length());
 	for (char i:main_line){
-		progress ++;
+//		progress ++;
 		for (int n = 0;n < Node_Map.size();n++){
 			if (Node_Map[n].first == i){
 //				cout << Node_Map[n].second << endl;
@@ -157,10 +158,10 @@ void ArchAlgorithm::BuildBinString(){
 				break;
 			}
 		}
-		prog_bar.showProgressBar(progress);
+//		prog_bar.showProgressBar(progress);
 	}
-	cout<< endl << " BUild Bin line end" << endl;
-	cout << bin_main_line << endl;	
+//	cout<< endl << " BUild Bin line end" << endl;
+//	cout << bin_main_line << endl;	
 }
 
 void ArchAlgorithm::BuildBinFile(){
@@ -183,7 +184,7 @@ void ArchAlgorithm::BuildBinFile(){
 	}
 
 	key_out_file.close();
-
+	cout << main_line << endl;
 	mpz_class bigNumber = mpz_class(bin_main_line, 2);
 	cout << bigNumber;
 
