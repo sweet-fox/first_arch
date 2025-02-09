@@ -8,8 +8,13 @@ void DeArchAlgorithm::ReadBinFile(){
 	string filename = "out_file.bin";
 	FILE* file = fopen(filename.c_str(),"rb");
 	mpz_class LoadNumber;
-	mpz_inp_raw(LoadNumber.get_mpz_t(),file);
-	cout << LoadNumber;
+	size_t num_read = mpz_inp_raw(LoadNumber.get_mpz_t(),file);
+	if (num_read == 0){
+		cout << "ERROR:file couldnt be read" << endl;
+		fclose(file);
+		return;
+	}
+
 	main_bin_line = LoadNumber.get_str(2);
 	fclose(file);
 	cout << LoadNumber;

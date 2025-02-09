@@ -42,6 +42,10 @@ void ArchAlgorithm::ReadFileString  (){
 			main_line = main_line + line+'|';
 		}
 	}
+	if (main_line == "|"){
+		cout<< "WARNING:Input file is empty\n";
+		exit(0);
+	}
 
 }
 
@@ -147,21 +151,19 @@ void ArchAlgorithm::PrintBinMap(){
 }
 void ArchAlgorithm::BuildBinString(){
 	bin_main_line = "";
-//	unsigned long int progress = 0;
-//	ProgressBar prog_bar(main_line.length());
+	unsigned long int progress = 0;
+	ProgressBar prog_bar(main_line.length());
 	for (char i:main_line){
-//		progress ++;
+		progress ++;
 		for (int n = 0;n < Node_Map.size();n++){
 			if (Node_Map[n].first == i){
-//				cout << Node_Map[n].second << endl;
 				bin_main_line = bin_main_line + Node_Map[n].second;
 				break;
 			}
 		}
-//		prog_bar.showProgressBar(progress);
+		prog_bar.showProgressBar(progress);
 	}
-//	cout<< endl << " BUild Bin line end" << endl;
-//	cout << bin_main_line << endl;	
+	cout<< endl << " BUild Bin line end" << endl;
 }
 
 void ArchAlgorithm::BuildBinFile(){
@@ -171,7 +173,6 @@ void ArchAlgorithm::BuildBinFile(){
 	char a = bin_main_line[i];
 	while(a!='1'){
 		a= bin_main_line[i];
-		cout<<a;
 		i++;
 	}
 
@@ -188,8 +189,6 @@ void ArchAlgorithm::BuildBinFile(){
 	mpz_class bigNumber = mpz_class(bin_main_line, 2);
 	cout << bigNumber;
 
-	ofstream out_file("out_file.bin");
-	out_file << bigNumber.get_str(16);
 
 	string filename = "out_file.bin";
 	FILE* file = fopen(filename.c_str(),"wb");
