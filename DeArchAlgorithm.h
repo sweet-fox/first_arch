@@ -11,5 +11,5 @@ private:
 	string main_line;
 public:
 	void ReadBinFile();
-	void ConvertBinFile();
+	void ConvertBinFile(string _file_name);
 };
